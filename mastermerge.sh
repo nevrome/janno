@@ -38,8 +38,32 @@ HEREDOC
 
 #### Program Functions ####
 
-_simple() {
-  printf "Perform a simple operation.\\n"
+_create_binary_file_list_file() {
+  # start message
+  printf "Creating input list for plink\\n"
+  # temporary output file
+  result_file="/tmp/mastermerge_binary_file_list_file"
+  rm -f ${result_file}
+  touch ${result_file}
+  # loop through all modules directories
+  while read p; do
+    # ignore empty names (empty lines in the input dir list)
+    if [ -z "${p}" ]
+    then
+      continue
+    fi
+    # loop through relevant file types (bed, bim, fam)
+    file_list=""
+    for extension in bed bim fam
+    do
+      new_file=$(find "${p}/" -name "*.${extension}")
+      file_list="${file_list} ${new_file}"
+    done 
+    # write result to output file
+    echo "${file_list}" >> ${result_file}
+  done <${1}
+  # end message
+  printf "Done\\n"
 }
 
 #### Main function ####
@@ -50,7 +74,7 @@ _main() {
   then
     _print_help
   else
-    _simple "$@"
+    _create_binary_file_list_file "${1:-}"
   fi
 }
 
