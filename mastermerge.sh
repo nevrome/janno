@@ -81,9 +81,33 @@ _plink_merge() {
 _janno_merge() {
   # start message
   printf "Merge janno files\\n"
-
-  ## TODO
-
+#  # https://stackoverflow.com/questions/27516935/merging-two-data-tables-with-missing-values-using-bash
+#  _input_file=${1}
+#  # loop through all modules directories 
+#  _last_origin=""
+#  _last_new=""
+#  while read p; do
+#    # ignore empty names (empty lines in the input dir list)
+#    if [ -z "${p}" ]
+#    then
+#      continue
+#    fi
+#    _new_file=$(find "${p}/" -name "*.tsv" -not -path '*/\.*')
+#    if [ -z "${_new_file}" ]
+#    then
+#      continue
+#    fi
+#    _last_origin="${_new_file}"
+#    sed -n '2,$p' "${_new_file}" | sort >"/tmp/mastermerge_$(basename ${_new_file}).sorted"
+#    if [ -z "${_last_new}" ]
+#    then
+#      _last_new="/tmp/mastermerge_$(basename ${_new_file}).sorted"
+#    else
+#      join -a 1 -a 2 -e '0' -1 1 -2 1 -t $'\t' ${_last_new} "/tmp/mastermerge_$(basename ${_new_file}).sorted" > "/tmp/mastermerge_joinedanno"
+#      head -1 ${_last_origin} | join -1 1 -2 1 -t $'\t' - <(head -1 "/tmp/mastermerge_joinedanno") >"/tmp/mastermerge_header"
+#      cat "/tmp/mastermerge_header" "/tmp/mastermerge_joinedanno" >> "/tmp/mastermerge_janno"
+#    fi
+#  done <${_input_file}
   # end message
   printf "Done\\n"
 } 
@@ -99,7 +123,7 @@ _main() {
     _tmp_binary_file_list_file="/tmp/mastermerge_binary_file_list_file"
     _create_binary_file_list_file ${1:-} ${_tmp_binary_file_list_file}
     _plink_merge ${2:-}
-    _janno_merge ${2:-}
+    _janno_merge ${1:-}
   fi
 }
 
