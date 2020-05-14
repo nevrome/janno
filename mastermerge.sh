@@ -40,7 +40,7 @@ HEREDOC
 
 _create_binary_file_list_file() {
   # start message
-  printf "Creating input list for plink\\n"
+  printf "Creating input file for plink merge\\n"
   # input file
   _input_file=${1}
   # temporary output file
@@ -68,6 +68,26 @@ _create_binary_file_list_file() {
   printf "Done\\n"
 }
 
+_plink_merge() {
+  # start message
+  printf "Merge genome data with plink\\n"
+
+  ## TODO
+
+  # end message
+  printf "Done\\n"
+} 
+
+_janno_merge() {
+  # start message
+  printf "Merge janno files\\n"
+
+  ## TODO
+
+  # end message
+  printf "Done\\n"
+} 
+
 #### Main function ####
 
 _main() {
@@ -78,6 +98,8 @@ _main() {
   else
     _tmp_binary_file_list_file="/tmp/mastermerge_binary_file_list_file"
     _create_binary_file_list_file ${1:-} ${_tmp_binary_file_list_file}
+    _plink_merge ${2:-}
+    _janno_merge ${2:-}
   fi
 }
 
