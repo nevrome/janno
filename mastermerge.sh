@@ -41,10 +41,12 @@ HEREDOC
 _create_binary_file_list_file() {
   # start message
   printf "Creating input list for plink\\n"
+  # input file
+  _input_file=${1}
   # temporary output file
-  result_file="/tmp/mastermerge_binary_file_list_file"
-  rm -f ${result_file}
-  touch ${result_file}
+  _result_file=${2}
+  rm -f ${_result_file}
+  touch ${_result_file}
   # loop through all modules directories
   while read p; do
     # ignore empty names (empty lines in the input dir list)
@@ -53,15 +55,15 @@ _create_binary_file_list_file() {
       continue
     fi
     # loop through relevant file types (bed, bim, fam)
-    file_list=""
+    _file_list=""
     for extension in bed bim fam
     do
-      new_file=$(find "${p}/" -name "*.${extension}")
-      file_list="${file_list} ${new_file}"
+      _new_file=$(find "${p}/" -name "*.${extension}")
+      _file_list="${_file_list} ${_new_file}"
     done 
     # write result to output file
-    echo "${file_list}" >> ${result_file}
-  done <${1}
+    echo "${_file_list}" >> ${_result_file}
+  done <${_input_file}
   # end message
   printf "Done\\n"
 }
@@ -74,7 +76,8 @@ _main() {
   then
     _print_help
   else
-    _create_binary_file_list_file "${1:-}"
+    _tmp_binary_file_list_file="/tmp/mastermerge_binary_file_list_file"
+    _create_binary_file_list_file ${1:-} ${_tmp_binary_file_list_file}
   fi
 }
 
