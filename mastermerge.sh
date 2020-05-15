@@ -78,53 +78,66 @@ _plink_merge() {
   printf "Done\\n"
 } 
 
+_merge_multiple_files() {
+  tempdir=$(mktemp --directory)
+  for infile in "${${1}[@]}"; do
+    sort "$infile" > "${tempdir}/${infile}.sorted"
+    if [ -e "${tempdir}/final.results" ]
+    then
+      join -a1 -a2 -e "NA" -o auto \
+        "${tempdir}/final.results" "${tempdir}/${infile}.sorted" \
+        > "${tempdir}/res"
+      mv "${tempdir}/res" "${tempdir}/final.results"
+    else
+      cp "${tempdir}/${infile}.sorted" "${tempdir}/final.results"
+    fi
+  done
+  cat "${tempdir}/final.results"
+}
+
 _janno_merge() {
   # start message
   printf "Merge janno files\\n"
-#  # https://stackoverflow.com/questions/27516935/merging-two-data-tables-with-missing-values-using-bash
-#  _input_file=${1}
-#  # loop through all modules directories 
-#  _last_origin=""
-#  _last_new=""
-#  while read p; do
-#    # ignore empty names (empty lines in the input dir list)
-#    if [ -z "${p}" ]
-#    then
-#      continue
-#    fi
-#    _new_file=$(find "${p}/" -name "*.tsv" -not -path '*/\.*')
-#    if [ -z "${_new_file}" ]
-#    then
-#      continue
-#    fi
-#    _last_origin="${_new_file}"
-#    sed -n '2,$p' "${_new_file}" | sort >"/tmp/mastermerge_$(basename ${_new_file}).sorted"
-#    if [ -z "${_last_new}" ]
-#    then
-#      _last_new="/tmp/mastermerge_$(basename ${_new_file}).sorted"
-#    else
-#      join -a 1 -a 2 -e '0' -1 1 -2 1 -t $'\t' ${_last_new} "/tmp/mastermerge_$(basename ${_new_file}).sorted" > "/tmp/mastermerge_joinedanno"
-#      head -1 ${_last_origin} | join -1 1 -2 1 -t $'\t' - <(head -1 "/tmp/mastermerge_joinedanno") >"/tmp/mastermerge_header"
-#      cat "/tmp/mastermerge_header" "/tmp/mastermerge_joinedanno" >> "/tmp/mastermerge_janno"
-#    fi
-#  done <${_input_file}
+  _input_file=${1}
+  # loop through all modules directories 
+  _janno_files=()
+  while read p; do
+    # ignore empty names (empty lines in the input dir list)
+    if [ -z "${p}" ]
+    then
+      continue
+    fi
+    _new_file=$(find "${p}/" -name "*.tsv" -not -path '*/\.*')
+    if [ -z "${_new_file}" ]
+    then
+      continue
+    fi
+    _janno_files+=_new_file
+  done <${_input_file}
+  _merge_multiple_files ${_janno_files}
   # end message
   printf "Done\\n"
 } 
 
 #### Main function ####
 
+_workflow() {
+  _tmp_binary_file_list_file="/tmp/mastermerge_binary_file_list_file"
+  _create_binary_file_list_file ${1:-} ${_tmp_binary_file_list_file}
+  _plink_merge ${2:-}
+  _janno_merge ${1:-}
+}
+
 _main() {
-  # Avoid complex option parsing when only one program option is expected.
-  if [[ "${1:-}" =~ ^-h|--help$  ]]
-  then
+  if [[ $# -eq 0 ]] ; then
     _print_help
-  else
-    _tmp_binary_file_list_file="/tmp/mastermerge_binary_file_list_file"
-    _create_binary_file_list_file ${1:-} ${_tmp_binary_file_list_file}
-    _plink_merge ${2:-}
-    _janno_merge ${1:-}
   fi
+ 
+  case "${1}" in
+    -h) _print_help ;;
+    --help) _print_help ;;
+    *) _workflow ${1} ${2} ;;
+  esac
 }
 
 _main "$@"
