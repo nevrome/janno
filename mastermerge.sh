@@ -80,16 +80,17 @@ _plink_merge() {
 
 _merge_multiple_files() {
   tempdir=$(mktemp --directory)
-  for infile in "${${1}[@]}"; do
-    sort "$infile" > "${tempdir}/${infile}.sorted"
+  _janno_file_array=${1}
+  for infile in "${_janno_file_array[@]}"; do
+    sort "$infile" > "${tempdir}/$(basename ${infile}).sorted"
     if [ -e "${tempdir}/final.results" ]
     then
       join -a1 -a2 -e "NA" -o auto \
-        "${tempdir}/final.results" "${tempdir}/${infile}.sorted" \
+        "${tempdir}/final.results" "${tempdir}/$(basename ${infile}).sorted" \
         > "${tempdir}/res"
       mv "${tempdir}/res" "${tempdir}/final.results"
     else
-      cp "${tempdir}/${infile}.sorted" "${tempdir}/final.results"
+      cp "${tempdir}/$(basename ${infile}).sorted" "${tempdir}/final.results"
     fi
   done
   cat "${tempdir}/final.results"
@@ -112,8 +113,10 @@ _janno_merge() {
     then
       continue
     fi
-    _janno_files+=_new_file
+    printf "${_new_file}\\n"
+    _janno_files+=("${_new_file}")
   done <${_input_file}
+  printf "${_janno_files}\\n" 
   _merge_multiple_files ${_janno_files}
   # end message
   printf "Done\\n"
@@ -136,7 +139,7 @@ _main() {
   case "${1}" in
     -h) _print_help ;;
     --help) _print_help ;;
-    *) _workflow ${1} ${2} ;;
+    *) _workflow ${1} ;;
   esac
 }
 
