@@ -79,41 +79,22 @@ _plink_merge() {
 } 
 
 _merge_multiple_files() {
-  tempdir=$(mktemp --directory)
-  # headers
-  for infile in ${@}; do
-    head -1 "${infile}" | sort > "${tempdir}/$(basename ${infile}).header"
-    if [ -e "${tempdir}/final.header" ]
-    then
-      join -a1 -a2 -e "n/a" -o auto \
-        "${tempdir}/final.header" "${tempdir}/$(basename ${infile}).header" \
-        > "${tempdir}/res"
-      mv "${tempdir}/res" "${tempdir}/final.header"
-    else
-      cp "${tempdir}/$(basename ${infile}).header" "${tempdir}/final.header"
-    fi
-  done
-  cat "${tempdir}/final.header"
-  # file content
-  for infile in ${@}; do
-    sed -n '2,$p' "${infile}" | sort > "${tempdir}/$(basename ${infile}).sorted"
-    if [ -e "${tempdir}/final.results" ]
-    then
-      join --nocheck-order -a1 -a2 -e "n/a" -o auto \
-        "${tempdir}/final.results" "${tempdir}/$(basename ${infile}).sorted" \
-        > "${tempdir}/res"
-      mv "${tempdir}/res" "${tempdir}/final.results"
-    else
-      cp "${tempdir}/$(basename ${infile}).sorted" "${tempdir}/final.results"
-    fi
-  done
-  cat "${tempdir}/final.results"
+  Rscript -e "
+    input_files_paths <- commandArgs(trailingOnly = TRUE)
+    input_files_dfs <- lapply(input_files_paths, read.delim, stringsAsFactors = F)
+    res_df <- do.call(rbind, input_files_dfs)
+    res_df[is.na(res_df)] <- 'n/a'
+    out_file <- '/tmp/mastermerge_mergedfile'
+    write.table(res_df, file = out_file, sep = '\t')
+    cat(out_file)
+  " ${@}
 }
 
 _janno_merge() {
   # start message
   printf "Merge janno files\\n"
   _input_file=${1}
+  _output_file=${2}
   # loop through all modules directories 
   _janno_files=()
   while read p; do
@@ -127,10 +108,12 @@ _janno_merge() {
     then
       continue
     fi
-    #printf "${_new_file}\\n"
     _janno_files+=("${_new_file}")
   done <${_input_file}
-  _merge_multiple_files ${_janno_files[@]}
+  # merge resulting janno files
+  _merged_janno_tmp_file=$(_merge_multiple_files ${_janno_files[@]})
+  # move output file
+  mv ${_merged_janno_tmp_file} ${_output_file}
   # end message
   printf "Done\\n"
 } 
@@ -141,7 +124,7 @@ _workflow() {
   _tmp_binary_file_list_file="/tmp/mastermerge_binary_file_list_file"
   _create_binary_file_list_file ${1:-} ${_tmp_binary_file_list_file}
   _plink_merge ${2:-}
-  _janno_merge ${1:-}
+  _janno_merge ${1:-} "test_merged_janno.janno"
 }
 
 _main() {
