@@ -80,9 +80,8 @@ _plink_merge() {
 
 _merge_multiple_files() {
   tempdir=$(mktemp --directory)
-  _janno_file_array=${1}
-  for infile in "${_janno_file_array[@]}"; do
-    sort "$infile" > "${tempdir}/$(basename ${infile}).sorted"
+  for infile in ${@}; do
+    sort "${infile}" > "${tempdir}/$(basename ${infile}).sorted"
     if [ -e "${tempdir}/final.results" ]
     then
       join -a1 -a2 -e "NA" -o auto \
@@ -113,11 +112,10 @@ _janno_merge() {
     then
       continue
     fi
-    printf "${_new_file}\\n"
+    #printf "${_new_file}\\n"
     _janno_files+=("${_new_file}")
   done <${_input_file}
-  printf "${_janno_files}\\n" 
-  _merge_multiple_files ${_janno_files}
+  _merge_multiple_files ${_janno_files[@]}
   # end message
   printf "Done\\n"
 } 
