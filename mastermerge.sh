@@ -99,7 +99,7 @@ _merge_multiple_files() {
     sed -n '2,$p' "${infile}" | sort > "${tempdir}/$(basename ${infile}).sorted"
     if [ -e "${tempdir}/final.results" ]
     then
-      join -a1 -a2 -e "n/a" -o auto \
+      join --nocheck-order -a1 -a2 -e "n/a" -o auto \
         "${tempdir}/final.results" "${tempdir}/$(basename ${infile}).sorted" \
         > "${tempdir}/res"
       mv "${tempdir}/res" "${tempdir}/final.results"
