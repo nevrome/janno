@@ -29,10 +29,11 @@ _ME=$(basename "${0}")
 _print_help() {
 cat <<HEREDOC
 Usage:
-  ${_ME} [<arguments>]
-  ${_ME} -h | --help
+  ${_ME} [input_file] [output_directory]
 Options:
-  -h --help  Show this screen.
+  input_file		File with a list of paths to poseidon module directories
+  output_directory	Path to an output directory
+ -h --help		Show this screen
 HEREDOC
 }
 
@@ -40,7 +41,7 @@ HEREDOC
 
 _create_binary_file_list_file() {
   # start message
-  printf "Creating input file for plink merge\\n"
+  printf "Creating input file for plink merge...\\n"
   # input file
   _input_file=${1}
   # temporary output file
@@ -70,9 +71,10 @@ _create_binary_file_list_file() {
 
 _plink_merge() {
   # start message
-  printf "Merge genome data with plink\\n"
+  printf "Merge genome data with plink...\\n"
 
   ## TODO
+  printf "${1}\\n"
 
   # end message
   printf "Done\\n"
@@ -85,16 +87,16 @@ _merge_multiple_files() {
     res_df <- do.call(rbind, input_files_dfs)
     res_df[is.na(res_df)] <- 'n/a'
     out_file <- '/tmp/mastermerge_mergedfile'
-    write.table(res_df, file = out_file, sep = '\t')
+    write.table(res_df, file = out_file, sep = '\t', quote = F, row.names = F)
     cat(out_file)
   " ${@}
 }
 
 _janno_merge() {
   # start message
-  printf "Merge janno files\\n"
+  printf "Merge janno files...\\n"
   _input_file=${1}
-  _output_file=${2}
+  _output_file="${2}/test_merged_janno.janno"
   # loop through all modules directories 
   _janno_files=()
   while read p; do
@@ -121,22 +123,27 @@ _janno_merge() {
 #### Main function ####
 
 _workflow() {
-  _tmp_binary_file_list_file="/tmp/mastermerge_binary_file_list_file"
-  _create_binary_file_list_file ${1:-} ${_tmp_binary_file_list_file}
-  _plink_merge ${2:-}
-  _janno_merge ${1:-} "test_merged_janno.janno"
+  # make output directory
+  mkdir -p ${2:-}
+  # run steps
+  _plink_input_file="/tmp/mastermerge_binary_file_list_file"
+  _create_binary_file_list_file ${1:-} ${_plink_input_file}
+  _plink_merge ${_plink_input_file} ${2:-}
+  _janno_merge ${1:-} ${2:-}
 }
 
 _main() {
   if [[ $# -eq 0 ]] ; then
     _print_help
+    exit 0
   fi
  
   case "${1}" in
     -h) _print_help ;;
     --help) _print_help ;;
-    *) _workflow ${1} ;;
+    *) _workflow ${1} ${2} ;;
   esac
+  exit 0
 }
 
 _main "$@"
