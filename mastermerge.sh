@@ -80,11 +80,26 @@ _plink_merge() {
 
 _merge_multiple_files() {
   tempdir=$(mktemp --directory)
+  # headers
   for infile in ${@}; do
-    sort "${infile}" > "${tempdir}/$(basename ${infile}).sorted"
+    head -1 "${infile}" | sort > "${tempdir}/$(basename ${infile}).header"
+    if [ -e "${tempdir}/final.header" ]
+    then
+      join -a1 -a2 -e "n/a" -o auto \
+        "${tempdir}/final.header" "${tempdir}/$(basename ${infile}).header" \
+        > "${tempdir}/res"
+      mv "${tempdir}/res" "${tempdir}/final.header"
+    else
+      cp "${tempdir}/$(basename ${infile}).header" "${tempdir}/final.header"
+    fi
+  done
+  cat "${tempdir}/final.header"
+  # file content
+  for infile in ${@}; do
+    sed -n '2,$p' "${infile}" | sort > "${tempdir}/$(basename ${infile}).sorted"
     if [ -e "${tempdir}/final.results" ]
     then
-      join -a1 -a2 -e "NA" -o auto \
+      join -a1 -a2 -e "n/a" -o auto \
         "${tempdir}/final.results" "${tempdir}/$(basename ${infile}).sorted" \
         > "${tempdir}/res"
       mv "${tempdir}/res" "${tempdir}/final.results"
