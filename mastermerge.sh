@@ -73,8 +73,8 @@ _plink_merge() {
   # start message
   printf "Merge genome data with plink...\\n"
 
-  ## TODO
-  printf "${1}\\n"
+  sbatch -p "short" -c 4 --mem=10000 -wrap "plink --merge-list ${1} --make-bed --indiv-sort f ${2} --out ${3}"
+  # write slurm logs somewhere
 
   # end message
   printf "Done\\n"
@@ -90,6 +90,8 @@ _merge_multiple_files() {
     write.table(res_df, file = out_file, sep = '\t', quote = F, row.names = F)
     cat(out_file)
   " ${@}
+  # replace R script with concat solution: The janno fiels do have the same columns and column order all the time - no complex merge logic necessary
+  # sort by order file
 }
 
 _janno_merge() {
@@ -120,6 +122,10 @@ _janno_merge() {
   printf "Done\\n"
 } 
 
+_janno_merge() {
+  # TODO: Create order file from fam files
+}
+
 #### Main function ####
 
 _workflow() {
@@ -128,8 +134,10 @@ _workflow() {
   # run steps
   _plink_input_file="/tmp/mastermerge_binary_file_list_file"
   _create_binary_file_list_file ${1:-} ${_plink_input_file}
-  _plink_merge ${_plink_input_file} ${2:-}
-  _janno_merge ${1:-} ${2:-}
+  # TODO: create concatenated order file from first two columns of fam files
+  # _order_file = ...
+  _plink_merge ${_plink_input_file} ${_order_file} ${2:-} 
+  _janno_merge ${1:-} ${_order_file} ${2:-}
 }
 
 _main() {
