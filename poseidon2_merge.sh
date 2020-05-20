@@ -3,15 +3,19 @@
 #### Main function ####
 
 _merge() {
-  # make output directory
-  mkdir -p ${2:-}
-  # run steps
+  # catch input variables
+  _input_file_with_list_of_poseidon_modules=${1}
+  _output_directory=${2}
+  # prepare other variables
   _plink_input_file="/tmp/mastermerge_binary_file_list_file"
-  _create_binary_file_list_file ${1:-} ${_plink_input_file}
+  # make output directory
+  mkdir -p ${_output_directory}
+  # run steps
+  #_create_binary_file_list_file ${_input_file_with_list_of_poseidon_modules} ${_plink_input_file}
   # TODO: create concatenated order file from first two columns of fam files
   # _order_file = ...
-  _plink_merge ${_plink_input_file} ${_order_file} ${2:-}
-  _janno_merge ${1:-} ${_order_file} ${2:-}
+  #_plink_merge ${_plink_input_file} ${_order_file} ${_output_directory}
+  _janno_merge ${_input_file_with_list_of_poseidon_modules} ${_output_directory}
 }
 
 _create_binary_file_list_file() {
@@ -59,15 +63,11 @@ _plink_merge() {
 }
 
 _merge_multiple_files() {
-  Rscript -e "
-    input_files_paths <- commandArgs(trailingOnly = TRUE)
-    input_files_dfs <- lapply(input_files_paths, read.delim, stringsAsFactors = F)
-    res_df <- do.call(rbind, input_files_dfs)
-    res_df[is.na(res_df)] <- 'n/a'
-    out_file <- '/tmp/mastermerge_mergedfile'
-    write.table(res_df, file = out_file, sep = '\t', quote = F, row.names = F)
-    cat(out_file)
-  " ${@}
+  _output_file=${1}
+  shift
+  _janno_files=("$@")
+  head -1 ${_janno_files[0]} > ${_output_file}
+  tail -n +3 -q ${_janno_files[@]} >> ${_output_file}
   # replace R script with concat solution: The janno fiels do have the same columns and column order all the time - no complex merge logic necessary
   # sort by order file
 }
@@ -93,9 +93,7 @@ _janno_merge() {
     _janno_files+=("${_new_file}")
   done <${_input_file}
   # merge resulting janno files
-  _merged_janno_tmp_file=$(_merge_multiple_files ${_janno_files[@]})
-  # move output file
-  mv ${_merged_janno_tmp_file} ${_output_file}
+  _merge_multiple_files "${_output_file}" "${_janno_files[@]}"
   # end message
   printf "Done\\n"
 }

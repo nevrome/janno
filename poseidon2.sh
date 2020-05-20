@@ -27,23 +27,25 @@ _ME=$(basename "${0}")
 #### Main Function ####
 
 _main() {
-  
+  # call special module help in case of no input at all
   if [[ $# -eq 0 ]] ; then
     _print_help
     exit 0
   fi
-
+  # catch input variables
   _module="${1}"
- 
+  # run modules depending on user input
   case "${_module}" in
     help) _print_help ;;
     merge) _merge ${2} ${3} ;;
     convert) printf "Not yet implemented\\n" ;;
   esac
+  # exit gracefully
   exit 0
 }
 
 #### Load other code files ####
+
 source poseidon2_help.sh
 source poseidon2_merge.sh
 source poseidon2_convert.sh
