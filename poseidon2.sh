@@ -35,12 +35,25 @@ cat << EOF
  | .__/ \___/|___/\___|_|\__,_|\___/|_| |_|_____|
  |_| 
 
-Usage:
-  ${_ME} [input_file] [output_directory]
-Options:
+Utility functions for the poseidon2 data format
+
+_help_ => Shows this screen
+
+  ${_ME} help
+
+_merge_ => Merges multiple poseidon directories
+ 
+  ${_ME} merge [input_file] [output_directory]
+
   input_file		File with a list of paths to poseidon module directories
   output_directory	Path to an output directory
- -h --help		Show this screen
+
+_convert_ => Converts data in poseidon directories
+  
+  ${_ME} convert ...
+
+  ...
+
 EOF
 }
 
@@ -182,8 +195,7 @@ _main() {
   fi
 
   case "${1}" in
-    -h) _print_help ;;
-    --help) _print_help ;;
+    help) _print_help ;;
     *) _workflow ${1} ${2} ;;
   esac
   exit 0
