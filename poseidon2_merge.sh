@@ -7,13 +7,13 @@ _merge() {
   _input_file_with_list_of_poseidon_modules=${1}
   _output_directory=${2}
   # prepare other variables
-  _plink_input_file="/tmp/mastermerge_binary_file_list_file"
+  _plink_input_file="/tmp/poseidon2_merge_plink_input_file"
+  _plink_order_file="/tmp/poseidon2_merge_plink_order_file"
   # make output directory
   mkdir -p ${_output_directory}
   # run steps
-  #_create_binary_file_list_file ${_input_file_with_list_of_poseidon_modules} ${_plink_input_file}
-  # TODO: create concatenated order file from first two columns of fam files
-  # _order_file = ...
+  _create_binary_file_list_file ${_input_file_with_list_of_poseidon_modules} ${_plink_input_file}
+  _create_order_file_from_fam_files ${_input_file_with_list_of_poseidon_modules} ${_plink_order_file}
   #_plink_merge ${_plink_input_file} ${_order_file} ${_output_directory}
   _janno_merge ${_input_file_with_list_of_poseidon_modules} ${_output_directory}
 }
@@ -62,14 +62,12 @@ _plink_merge() {
   printf "Done\\n"
 }
 
-_merge_multiple_files() {
+_merge_multiple_files_with_header() {
   _output_file=${1}
   shift
-  _janno_files=("$@")
-  head -1 ${_janno_files[0]} > ${_output_file}
-  tail -n +3 -q ${_janno_files[@]} >> ${_output_file}
-  # replace R script with concat solution: The janno fiels do have the same columns and column order all the time - no complex merge logic necessary
-  # sort by order file
+  _input_files=("$@")
+  head -1 ${_input_files[0]} > ${_output_file}
+  tail -n +3 -q ${_input_files[@]} >> ${_output_file}
 }
 
 _janno_merge() {
@@ -93,13 +91,39 @@ _janno_merge() {
     _janno_files+=("${_new_file}")
   done <${_input_file}
   # merge resulting janno files
-  _merge_multiple_files "${_output_file}" "${_janno_files[@]}"
+  _merge_multiple_files_with_header "${_output_file}" "${_janno_files[@]}"
   # end message
   printf "Done\\n"
 }
 
-_order_file() {
-  # TODO: Create order file from fam files
+_merge_multiple_files_and_cut_first_two_columns() {
+  _output_file=${1}
+  shift
+  _input_files=("$@")
+  cat ${_input_files[@]} | cut -f 1,2 -d " " > ${_output_file}
+}
+
+_create_order_file_from_fam_files() {
+  # start message
+  printf "Merge fam files to get order file...\\n"
+  _input_file=${1}
+  _output_file=${2}
+  # loop through all modules directories
+  _fam_files=()
+  while read p; do
+    # ignore empty names (empty lines in the input dir list)
+    if [ -z "${p}" ]
+    then
+      continue
+    fi
+    _new_file=$(find "${p}/" -name "*.fam" -not -path '*/\.*')
+    if [ -z "${_new_file}" ]
+    then
+      continue
+    fi
+    _fam_files+=("${_new_file}")
+  done <${_input_file}
+  _merge_multiple_files_and_cut_first_two_columns "${_output_file}" "${_fam_files[@]}"
   printf "Done\\n"
 }
 
