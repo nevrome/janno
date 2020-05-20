@@ -61,7 +61,7 @@ _create_binary_file_list_file() {
     do
       _new_file=$(find "${p}/" -name "*.${extension}")
       _file_list="${_file_list} ${_new_file}"
-    done 
+    done
     # write result to output file
     echo "${_file_list}" >> ${_result_file}
   done <${_input_file}
@@ -73,12 +73,15 @@ _plink_merge() {
   # start message
   printf "Merge genome data with plink...\\n"
 
-  sbatch -p "short" -c 4 --mem=10000 -wrap "plink --merge-list ${1} --make-bed --indiv-sort f ${2} --out ${3}"
+  sbatch -p "short" -c 4 --mem=10000 -J "plink-merge" --wrap="plink --merge-list ${1} --make-bed --indiv-sort f ${2} --out ${3}_TF"
   # write slurm logs somewhere
+
+  sbatch -p "short" -c 1 --mem=10000 -J "extract_SNPs" --wrap="plink --bfile ${3}_TF --extract ${4} --make-bed --out ${5}_HO"
+  # To extract Human Origins SNPs for PCA & other analysis with modern samples
 
   # end message
   printf "Done\\n"
-} 
+}
 
 _merge_multiple_files() {
   Rscript -e "
@@ -99,7 +102,7 @@ _janno_merge() {
   printf "Merge janno files...\\n"
   _input_file=${1}
   _output_file="${2}/test_merged_janno.janno"
-  # loop through all modules directories 
+  # loop through all modules directories
   _janno_files=()
   while read p; do
     # ignore empty names (empty lines in the input dir list)
@@ -120,7 +123,7 @@ _janno_merge() {
   mv ${_merged_janno_tmp_file} ${_output_file}
   # end message
   printf "Done\\n"
-} 
+}
 
 _janno_merge() {
   # TODO: Create order file from fam files
@@ -136,7 +139,7 @@ _workflow() {
   _create_binary_file_list_file ${1:-} ${_plink_input_file}
   # TODO: create concatenated order file from first two columns of fam files
   # _order_file = ...
-  _plink_merge ${_plink_input_file} ${_order_file} ${2:-} 
+  _plink_merge ${_plink_input_file} ${_order_file} ${2:-}
   _janno_merge ${1:-} ${_order_file} ${2:-}
 }
 
@@ -145,7 +148,7 @@ _main() {
     _print_help
     exit 0
   fi
- 
+
   case "${1}" in
     -h) _print_help ;;
     --help) _print_help ;;
@@ -155,4 +158,3 @@ _main() {
 }
 
 _main "$@"
-
