@@ -27,14 +27,21 @@ _ME=$(basename "${0}")
 #### Help function ####
 
 _print_help() {
-cat <<HEREDOC
+cat << EOF
+                       _     _             ____    ___  
+  _ __   ___  ___  ___(_) __| | ___  _ __ |___ \  / _ \ 
+ | '_ \ / _ \/ __|/ _ \ |/ _  |/ _ \| '_ \  __) || | | |
+ | |_) | (_) \__ \  __/ | (_| | (_) | | | |/ __/ | |_| |
+ | .__/ \___/|___/\___|_|\__,_|\___/|_| |_|_____(_)___/ 
+ |_| 
+
 Usage:
   ${_ME} [input_file] [output_directory]
 Options:
   input_file		File with a list of paths to poseidon module directories
   output_directory	Path to an output directory
  -h --help		Show this screen
-HEREDOC
+EOF
 }
 
 #### Program Functions ####
@@ -149,8 +156,9 @@ _janno_merge() {
   printf "Done\\n"
 }
 
-_janno_merge() {
+_order_file() {
   # TODO: Create order file from fam files
+  printf "Done\\n"
 }
 
 #### Main function ####
