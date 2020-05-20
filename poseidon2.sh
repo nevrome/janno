@@ -37,7 +37,7 @@ _main() {
  
   case "${_module}" in
     help) _print_help ;;
-    merge) _merge2 ${2} ${3} ;;
+    merge) _merge ${2} ${3} ;;
     convert) printf "Not yet implemented\\n" ;;
   esac
   exit 0
