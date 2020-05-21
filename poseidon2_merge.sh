@@ -7,21 +7,21 @@ _merge() {
   _input_file_with_list_of_poseidon_modules=${1}
   _output_directory=${2}
   # prepare other variables
-  _output_files_name="poseidon2_merge_$(date +'%Y_%m_%d')"
+  _current_date="$(date +'%Y_%m_%d')"
+  _output_files_name="poseidon2_merge_${_current_date}"
+  _log_file_directory="poseidon2_log/${_current_date}"
   _plink_input_file="${2}/poseidon2_merge_plink_input_file.txt"
   _plink_order_file="${2}/poseidon2_merge_plink_order_file.txt"
   # start message
-  _merge_start_message ${_input_file_with_list_of_poseidon_modules} ${_output_directory} ${_output_files_name}
-  # make output directory
+  _merge_start_message ${_input_file_with_list_of_poseidon_modules} ${_output_directory} ${_output_files_name} ${_log_file_directory}
+  # make output and log directory
   mkdir -p ${_output_directory}
+  mkdir -p ${_log_file_directory}
   # run steps
   _create_binary_file_list_file ${_input_file_with_list_of_poseidon_modules} ${_plink_input_file}
   _janno_merge ${_input_file_with_list_of_poseidon_modules} ${_output_directory} ${_output_files_name}
   _create_order_file_from_fam_files ${_input_file_with_list_of_poseidon_modules} ${_plink_order_file}
-  _plink_merge ${_plink_input_file} ${_plink_order_file} ${_output_directory} ${_output_files_name}
-  # delete temporary files
-  #rm "${2}/poseidon2_merge_plink_input_file"
-  #rm "${2}/poseidon2_merge_plink_order_file"
+  _plink_merge ${_plink_input_file} ${_plink_order_file} ${_output_directory} ${_output_files_name} ${_log_file_directory}
 }
 
 _merge_start_message() {
@@ -38,6 +38,7 @@ merge => Merges multiple poseidon directories
 Input file with modules list:	${1}
 Output directory: 		${2}
 Output file name: 		${3}.*
+Log file directory:		${4}  
   
 EOF
 }
@@ -143,7 +144,7 @@ _plink_merge() {
   printf "Merge genome data with plink...\\n=> "
 
   # TODO: write slurm logs somewhere
-  sbatch -p "short" -c 4 --mem=10000 -J "poseidon2_merge_plink" -o "test_log/poseidon2_%j.out" -e "test_log/poseidon2_%j.err" --wrap="cat ${1} && plink --merge-list ${1} --make-bed --indiv-sort f ${2} --out ${3}/${4}"
+  sbatch -p "short" -c 4 --mem=10000 -J "poseidon2_merge_plink" -o "${5}/poseidon2_%j.out" -e "${5}/poseidon2_%j.err" --wrap="plink --merge-list ${1} --make-bed --indiv-sort f ${2} --out ${3}/${4}"
 
   # To extract Human Origins SNPs for PCA & other analysis with modern samples
   #sbatch -p "short" -c 1 --mem=10000 -J "extract_SNPs" --wrap="plink --bfile ${3}_TF --extract ${4} --make-bed --out ${5}_HO"
