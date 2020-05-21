@@ -39,6 +39,7 @@ _main() {
     help) _print_help ;;
     merge) _merge ${2} ${3} ;;
     convert) printf "Not yet implemented\\n" ;;
+    extract) printf "Not yet implemented\\n" ;;
   esac
   # exit gracefully
   exit 0
@@ -49,6 +50,7 @@ _main() {
 source poseidon2_help.sh
 source poseidon2_merge.sh
 source poseidon2_convert.sh
+source poseidon2_extract.sh
 
 #### Run ####
 
