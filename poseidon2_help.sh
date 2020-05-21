@@ -9,18 +9,18 @@ cat << EOF
 
 Utility functions for the poseidon2 data format
 
-_help_ => Shows this screen
+help => Shows this screen
 
   ${_ME} help
 
-_merge_ => Merges multiple poseidon directories
+merge => Merges multiple poseidon directories
  
   ${_ME} merge [input_file] [output_directory]
 
   input_file		File with a list of paths to poseidon module directories
   output_directory	Path to an output directory
 
-_convert_ => Converts data in poseidon directories
+convert => Converts data in poseidon directories
   
   ${_ME} convert ...
 
