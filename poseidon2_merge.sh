@@ -5,9 +5,9 @@ _merge() {
   _input_file_with_list_of_poseidon_modules=${1}
   _output_directory=${2}
   # prepare other variables
-  _current_date="$(date +'%Y_%m_%d_%H_%M')"
+  _current_date=${3}
   _output_files_name="poseidon2_merge_${_current_date}"
-  _log_file_directory="poseidon2_tmp_and_log/${_current_date}"
+  _log_file_directory=${4}
   _plink_input_file="${_log_file_directory}/poseidon2_merge_plink_input_file.txt"
   _plink_order_file="${_log_file_directory}/poseidon2_merge_plink_order_file.txt"
   # start message
@@ -15,7 +15,6 @@ _merge() {
   _print_modules ${_input_file_with_list_of_poseidon_modules}
   # make output and log directory
   mkdir -p ${_output_directory}
-  mkdir -p ${_log_file_directory}
   # run steps
   _create_binary_file_list_file ${_input_file_with_list_of_poseidon_modules} ${_plink_input_file}
   _janno_merge ${_input_file_with_list_of_poseidon_modules} ${_output_directory} ${_output_files_name}

@@ -32,13 +32,18 @@ _main() {
     _print_help
     exit 0
   fi
-  # catch input variables
+  # catch module variable
   _module="${1}"
+  # get name date
+  _current_date="$(date +'%Y_%m_%d_%H_%M')"
+  # create tmp_and_log_directory
+  _log_file_directory="poseidon2_tmp_and_log/${_current_date}"
+  mkdir -p ${_log_file_directory}
   # run modules depending on user input
   case "${_module}" in
     help) _print_help ;;
-    merge) _merge ${2} ${3} ;;
-    convert) printf "Not yet implemented\\n" ;;
+    merge) _merge ${2} ${3} ${_current_date} ${_log_file_directory} ;;
+    convert) _convert ${2} ;;
     extract) printf "Not yet implemented\\n" ;;
   esac
   # exit gracefully

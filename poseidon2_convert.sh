@@ -1,4 +1,8 @@
-# Author: Ayshin
+# Author: Ayshin & Clemens
+
+_convert() {
+  
+}
 
 _ped2eig() {
   # start message
