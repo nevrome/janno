@@ -93,7 +93,7 @@ _merge_multiple_files_with_header() {
   shift
   _input_files=("$@")
   head -1 ${_input_files[0]} > ${_output_file}
-  tail -n +3 -q ${_input_files[@]} >> ${_output_file}
+  tail -n +2 -q ${_input_files[@]} >> ${_output_file}
 }
 
 _janno_merge() {

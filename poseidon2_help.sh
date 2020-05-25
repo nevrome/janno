@@ -7,18 +7,7 @@ cat << EOF
  |  __/ \___/|___/\___|_|\____|\___/|_| |_|_____|
  |_| 
 
-Utility functions for the poseidon2 data format
-
-help => Shows this screen
-
-  ${_ME} help
-
-merge => Merges multiple poseidon directories
- 
-  ${_ME} merge [input_file] [output_directory]
-
-  input_file		File with a list of paths to poseidon module directories
-  output_directory	Path to an output directory
+Utility functions for the poseidon2 data format. All input directories have to adhere to the poseidon2 file structure as documented here: ...
 
 convert => Converts data in poseidon directories
   
@@ -31,6 +20,17 @@ extract => Extracts certain SNP panels from a poseidon module
   ${_ME} extract ...
 
   ...
+
+help => Shows this screen
+
+  ${_ME} help
+
+merge => Merges multiple poseidon directories
+ 
+  ${_ME} merge [input_file] [output_directory]
+
+  input_file		File with a list of paths to poseidon module directories
+  output_directory	Path to an output directory
 
 EOF
 }
