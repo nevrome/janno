@@ -58,15 +58,15 @@ External projects can be integrated similarly by using their publication name, o
 /modern/Eurasia_newHO_Choongwon  
 /modern/Mali_Dogon_Hiba
 
-Jannot-files and other files should follow the same structure as above, with year_month_day subfolders for genotype data.
+Janno-files and other files should follow the same structure as above, with year_month_day subfolders for genotype data.
 
 **Important: Individuals are unique in each dataset (no duplicates across datasets).**
 
 
-## Jannot-Format:
+## Janno-Format:
 we should make a script, which will take an IND file as input and output an annot file from Pandora. This would be partial, as several analyses results need to be added (Sex, haplogroups etc).???
 
-In general, we allow N/A in jannot-files in fields for which the analyses hasn’t yet been made. Ideally, all published projects should have the least number of N/As possible. For modern data several fields will be filled as N/A as well.
+In general, we allow N/A in janno-files in fields for which the analyses hasn’t yet been made. Ideally, all published projects should have the least number of N/As possible. For modern data several fields will be filled as N/A as well.
 
 **format: Tab-separated, with a header line.**
 
