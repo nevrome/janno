@@ -7,9 +7,9 @@ _merge() {
   # prepare other variables
   _current_date="$(date +'%Y_%m_%d_%H_%M')"
   _output_files_name="poseidon2_merge_${_current_date}"
-  _log_file_directory="poseidon2_log/${_current_date}"
-  _plink_input_file="${2}/poseidon2_merge_plink_input_file.txt"
-  _plink_order_file="${2}/poseidon2_merge_plink_order_file.txt"
+  _log_file_directory="poseidon2_tmp_and_log/${_current_date}"
+  _plink_input_file="${_log_file_directory}/poseidon2_merge_plink_input_file.txt"
+  _plink_order_file="${_log_file_directory}/poseidon2_merge_plink_order_file.txt"
   # start message
   _merge_start_message ${_input_file_with_list_of_poseidon_modules} ${_output_directory} ${_output_files_name} ${_log_file_directory}
   _print_modules ${_input_file_with_list_of_poseidon_modules}
@@ -154,6 +154,6 @@ _create_order_file_from_fam_files() {
 
 _plink_merge() {
   printf "Merge genome data with plink...\\n=> "
-  sbatch -p "short" -c 4 --mem=10000 -J "poseidon2_merge_plink" -o "${5}/poseidon2_%j.out" -e "${5}/poseidon2_%j.err" --wrap="plink --merge-list ${1} --make-bed --indiv-sort f ${2} --out ${3}/${4}"
+  sbatch -p "short" -c 4 --mem=10000 -J "poseidon2_merge_plink" -o "${5}/poseidon2_%j.out" -e "${5}/poseidon2_%j.err" --wrap="plink --merge-list ${1} --make-bed --indiv-sort f ${2} --out ${3}/${4} && mv ${3}/${4}.log ${5}/plink.log"
 }
 
