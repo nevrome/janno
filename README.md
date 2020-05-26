@@ -1,69 +1,108 @@
-# Poseidon: DAG Genotype Data Organisation
+# Poseidon v.2: DAG Genotype Data Organisation
 Last Update: May 25, 2020
 
-Basic idea: All ancient and modern data are distributed into so-called packages. These correspond to published sets of genomes, or in case of unpublished projects, ongoing (and growing) sets of samples currently analysed.
+Poseidon v.2 is an intermediate solution for the genotype data organisation within our department. It's a more simple approach than Stephan's Poseidon v.1 and also not as sophisticated as Stephan's yet unfinished Poseidon v.3, but still may simplify data storage and acquisition in the near to mid-term future.
 
-Basic root folder division:  
+Content of this file:
+
+1. The Poseidon v.2 `package`
+2. The `.janno` file
+3. The `poseidon2` command line software
+
+## 1. The Poseidon v.2 `package`
+
+All ancient and modern data are distributed into so-called packages, which are folders containing a dedicated set of files. Packages correspond to published sets of genomes, or in case of unpublished projects, ongoing (and growing) sets of samples currently analysed.
+
+Individual contributors would create packages in dedicated poseidon folders in their user project directories, e.g. `/project1/user/xyz/poseidon/2018_Lamnidis_Fennoscandia`. That way, subfolders belong to individual maintainers and be writable only by them. 
+
+The poseidon admins (currently Stephan, Wolfgang, Ayshin and Clemens) would then link these packages into the official `/projects1/poseidon` repo, where we distinguish ancient and modern genotype data:
+
+```
 /projects1/poseidon/ancient/…  
 /projects1/poseidon/modern/…
+```
 
-These folders would be world-readable and writable only by Poseidon Admins (Currently Users schiffels,haak, Clemens and Ayshin). Individual contributors would create modules in dedicated poseidon folders in their user project directories, e.g. /project1/user/xyz/poseidon/2018_Lamnidis_Fennoscandia. That way, subfolders belong to individual maintainers and be writable only by them. The poseidon admins would then link these folders into the official /projects1/poseidon repo.
+### Naming
 
+The naming of packages should follow a simple scheme:
 
-## Internal projects
-### Published
-Identifiers with year:  
-/ancient/2018_Lamnidis_Fennoscandia  
-/ancient/2019_Wang_Caucasus  
-/ancient/2019_Flegontov_PaleoEskimo  
+Ancient published: YEAR_NAME_IDENTIFIER
 
+```
+2018_Lamnidis_Fennoscandia  
+2019_Wang_Caucasus  
+2019_Flegontov_PaleoEskimo  
+```
 
-### Unpublished
-Identifiers without Year:  
-/ancient/Bohemia_LNBA_Luka  
-/ancient/Africa_with_DA_Ke  
-/ancient/SouthEastAsia_Selina  
+Ancient unpublished: IDENTIFIER_NAME
 
-These identifiers can be somewhat more informal as long as the project is ongoing, they just need to be unique. As soon as a project gets published, we need to rename into YEAR_LASTNAME_IDENTIFER as above.
+```
+Bohemia_LNBA_Luka  
+Africa_with_DA_Ke  
+SouthEastAsia_Selina  
+```
 
-### Sub-Structure
-Every project should have the following items: README, CHANGELOG, data-subfolders organised via dates (YYYY_MM_DD). Examples:
+Modern published: YEAR_(NAME)_IDENTIFIER
 
-/ancient/Bohemia_LNBA_Luka/README.txt
-/ancient/Bohemia_LNBA_Luka/CHANGELOG.txt
-/ancient/Bohemia_LNBA_Luka/2019_03_20/
-/ancient/Bohemia_LNBA_Luka/2019_05_15/  
+```
+2015_1000_Genomes-1240K_haploid_pulldown
+2016_Mallick_SGDP1240K_diploid_pulldown
+2014_Lazaridis_HOmodern
+2016_Lazaridis_HOmodern
+2019_Flegontov_HO_NewSiberian
+2018_Lipson_SEA
+```
+
+Modern unpublished: IDENTIFIER_NAME
+
+```
+Eurasia_newHO_Choongwon  
+Mali_Dogon_Hiba
+```
+
+Identifiers can be somewhat informal as long as the project is ongoing, they just need to be unique. As soon as a project gets published, we create a final version of the respective package with the YEAR_NAME_IDENTIFIER label.
+
+External projects can be integrated similarly by using their publication name, or by temporary internal identifiers such as `Iron_Age_Boston_Share`.
+
+### Substructure
+
+Every package should have the following files: 
+
+- README.txt
+- CHANGELOG.txt#
+- data-subfolders with date name: YYYY_MM_DD
+
+Each of the data-subfolders holds the following files:
+
+- X.janno (see below)
+- X.geno
+- X.snp
+- X.ind
+- X.bed
+- X.bim
+- X.fam
+
+Example:
+
+```
+Bohemia_LNBA_Luka/README.txt
+Bohemia_LNBA_Luka/CHANGELOG.txt
+Bohemia_LNBA_Luka/2019_03_20/
+Bohemia_LNBA_Luka/2019_05_15/  
 ...  
-/ancient/Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.eigenstrat.geno
-/ancient/Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.eigenstrat.snp
-/ancient/Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.eigenstrat.ind
-/ancient/Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.plink.bed
-/ancient/Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.plink.bim
-/ancient/Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.plink.fam
-/ancient/Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.janno
+Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.eigenstrat.geno
+Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.eigenstrat.snp
+Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.eigenstrat.ind
+Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.plink.bed
+Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.plink.bim
+Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.plink.fam
+Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.janno
+```
 
-External projects can be integrated similarly by using their publication name, or by temporary internal identifiers such as “Iron_Age_Boston_Share”.
-
-
-## Modern Data
-### Published
-/modern/2015_1000_Genomes-1240K_haploid_pulldown
-/modern/2016_Mallick_SGDP1240K_diploid_pulldown
-/modern/2014_Lazaridis_HOmodern
-/modern/2016_Lazaridis_HOmodern
-/modern/2019_Flegontov_HO_NewSiberian
-/modern/2018_Lipson_SEA
-
-### Unpublished, no year:
-/modern/Eurasia_newHO_Choongwon  
-/modern/Mali_Dogon_Hiba
-
-Janno-files and other files should follow the same structure as above, with year_month_day subfolders for genotype data.
+## 2. The `.janno` file
 
 **Important: Individuals are unique in each dataset (no duplicates across datasets).**
 
-
-## Janno-Format:
 we should make a script, which will take an IND file as input and output an annot file from Pandora. This would be partial, as several analyses results need to be added (Sex, haplogroups etc).???
 
 In general, we allow N/A in janno-files in fields for which the analyses hasn’t yet been made. Ideally, all published projects should have the least number of N/As possible. For modern data several fields will be filled as N/A as well.
@@ -104,3 +143,7 @@ Columns:
 - Primary_Contact (e.g. project leader or first author)  
 - Publication_status (published or unpublished)  
 - Note  
+
+## 3. The `poseidon2` command line software
+
+...
