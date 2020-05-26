@@ -101,14 +101,16 @@ Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.janno
 
 ## 2. The `.janno` file
 
-The `.janno` file is a tab-separated text file with a header line that holds a clearly defined set of metainformation (columns) for each sample (rows) in a package. 
+The .janno file is a tab-separated text file with a header line that holds a clearly defined set of metainformation (columns) for each sample (rows) in a package. 
 
-The variables (columns), variable types and possible content of the `janno` file are documented here: https://docs.google.com/spreadsheets/d/1YfdApKAqSKdxsw_AdFqLqo6zfru-IFmwty1uUPMfYv0
+The variables (columns), variable types and possible content of the janno file are documented here: https://docs.google.com/spreadsheets/d/1YfdApKAqSKdxsw_AdFqLqo6zfru-IFmwty1uUPMfYv0
 
-A `.janno` file must have all of these columns in exactly this order with exactly these column names. If information is unknown or a variable does not apply for a certain sample, then the respective cell(s) can be filled with the NULL value n/a. Ideally, a `.janno` file should have the least number of n/a-values possible.
+A .janno file must have all of these columns in exactly this order with exactly these column names. If information is unknown or a variable does not apply for a certain sample, then the respective cell(s) can be filled with the NULL value n/a. Ideally, a .janno file should have the least number of n/a-values possible.
 
-The order of the samples (rows) in the `.janno` file must be equal to the order in the files that hold the core genetic data.
+The order of the samples (rows) in the .janno file must be equal to the order in the files that hold the core genetic data.
 
 ## 3. The `poseidon2` command line software
 
-...
+To automate the most important operations with Poseidon v.2 packages, the department collaboratively develops a bash command line tool called poseidon2. See the help module to learn about the current set of features: `./poseidon2.sh help`.
+
+If you want to add features please contact Clemens or Ayshin to get write access to the source code.
