@@ -153,6 +153,6 @@ _create_order_file_from_fam_files() {
 
 _plink_merge() {
   printf "Merge genome data with plink...\\n=> "
-  sbatch -p "short" -c 4 --mem=10000 -J "poseidon2_merge_plink" -o "${5}/poseidon2_%j.out" -e "${5}/poseidon2_%j.err" --wrap="plink --merge-list ${1} --make-bed --indiv-sort f ${2} --out ${3}/${4} && mv ${3}/${4}.log ${5}/plink.log"
+  sbatch -p "short" -c 4 --mem=10000 -J "poseidon2_merge" -o "${5}/poseidon2_%j.out" -e "${5}/poseidon2_%j.err" --wrap="plink --merge-list ${1} --make-bed --indiv-sort f ${2} --out ${3}/${4} && mv ${3}/${4}.log ${5}/plink.log"
 }
 

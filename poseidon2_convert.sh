@@ -5,14 +5,12 @@ _convert() {
   _input_module=${1}
   _output_format=${2}
   # prepare other variables
-  _current_date=${3}
-  _output_files_name="poseidon2_convert_${_current_date}"
-  _log_file_directory=${4}
+  _log_file_directory=${3}
   # start message
   _convert_start_message ${_input_module} ${_output_format} ${_log_file_directory}
   # run conversion depending on user input
   case "${_output_format}" in
-    eigenstrat) printf "Not yet implemented.\\n" ;; #_ped2eig ${_input_module} ${_output_files_name} ;;
+    eigenstrat) _ped2eig ${_input_module} ${_log_file_directory} ;; #_ped2eig ${_input_module} ${_output_files_name} ;;
     *) printf "I don't know this output format name.\\n"
   esac
 }
@@ -36,25 +34,36 @@ EOF
 }
 
 _ped2eig() {
-  # start message
   printf "Converting plink files to eigenstrat format...\\n"
 
-  sbatch -p "short" -c 1 --mem=10000 -J "bed2map" --wrap="plink --bfile ${3}_TF --recode --out ${6}_TF"
-  # For 1240K dataset
+  _input_package=${1}  
+  _log_file_directory=${2}
 
-  #sbatch -p "short" -c 1 --mem=10000 -J "bed2map" --wrap="plink --bfile ${5}_HO --recode --out ${7}_HO"
-  # For Human Origins dataset, we can have this as only a temporary file
+  _file_list=()
+  for extension in bed bim fam
+  do
+    _file_list+=($(find "${_input_package}/" -name "*.${extension}"))
+  done
 
-  cat convertf_TF.par <<EOF
-  genotypename: $PWD/${6}_TF.ped
-  snpname: $PWD/${6}_TF.map
-  indivname: $PWD/${6}_TF.pedind
+  _file_name=${_file_list[1]%.*}
+  
+  touch "${_log_file_directory}/convertf.par"
+ 
+cat > ${_log_file_directory}/convertf.par <<EOF
+  genotypename: ${_file_name}.ped
+  snpname: ${_file_name}.map
+  indivname: ${_file_name}.pedind
   outputformat: EIGENSTRAT
-  genotypeoutname: $PWD/${6}_TF.geno
-  snpoutname: $PWD/${6}_TF.snp
-  indivoutname: $PWD/${6}_TF.ind
+  genotypeoutname: ${_file_name}.geno
+  snpoutname: ${_file_name}.snp
+  indivoutname: ${_file_name}.ind
   familynames: NO
 EOF
+
+  printf "=> ${_log_file_directory}/convertf.par\\n" 
+
  # TODO: check .pedind format, we might have create it or just modify one of plink files
-  sbatch -c 1 --mem=2000  -J "convertf" --wrap="convertf -p convertf_TF.par > convert.log"
+  #sbatch -c 1 --mem=2000  -J "poseidon_convert" --wrap="plink --bed ${_file_list[0]} --bim ${_file_list[1]} --fam ${_file_list[2]} --recode --out ${6} && convertf -p convertf.par > convert.log"
+
 }
+
