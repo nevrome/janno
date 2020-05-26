@@ -72,7 +72,7 @@ Every package should have the following files:
 - CHANGELOG.txt#
 - data-subfolders with date name: YYYY_MM_DD
 
-Each of the data-subfolders holds the following files:
+Each of the data-subfolders must hold all the following files:
 
 - X.janno (see below)
 - X.geno
@@ -101,48 +101,13 @@ Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.janno
 
 ## 2. The `.janno` file
 
-**Important: Individuals are unique in each dataset (no duplicates across datasets).**
+The `.janno` file is a tab-separated text file with a header line that holds a clearly defined set of metainformation (columns) for each sample (rows) in a package. 
 
-we should make a script, which will take an IND file as input and output an annot file from Pandora. This would be partial, as several analyses results need to be added (Sex, haplogroups etc).???
+The variables (columns), variable types and possible content of the `janno` file are documented here: https://docs.google.com/spreadsheets/d/1YfdApKAqSKdxsw_AdFqLqo6zfru-IFmwty1uUPMfYv0
 
-In general, we allow N/A in janno-files in fields for which the analyses hasn’t yet been made. Ideally, all published projects should have the least number of N/As possible. For modern data several fields will be filled as N/A as well.
+A `.janno` file must have all of these columns in exactly this order with exactly these column names. If information is unknown or a variable does not apply for a certain sample, then the respective cell(s) can be filled with the NULL value n/a. Ideally, a `.janno` file should have the least number of n/a-values possible.
 
-**format: Tab-separated, with a header line.**
-
-Columns:  
-- Individual_ID (from Pandora, in most cases Individual, but can also be Sample or Library depending on the granularity of the project)
-- Collection_ID  
-- Archaeological_ID  
-- Skeletal_Element  
-- Country  
-- Location  
-- Site  
-- Latitude  
-- Longitude  
-- Average_Date (0 for modern, **calBP always!**)  
-- Date_Earlier (calBP)  
-- Date_Later (calBP)  
-- Date_Type (C14 vs. contextual)  
-- No_of_Libraries  
-- Data_Type (SG or 1240K)
-- Genotype_Ploidy   
-- Group_name (Eisenmann rule + underscore flags, e.g. to annotate relatives or outliers)  
-- Genetic_Sex (F, M, U)  
-- Nr_autosomal_SNPs  
-- Coverage_1240K (N/A for modern)  
-- MT_haplogroup (can be N/A)  
-- Y_haplogroup (can be N/A)  
-- %endogenous (best library)  
-- UDG (minus, half, plus, or combinations thereof in case multiple libraries were merged)  
-- Library_Built  (ds, ss)
-- Damage (for the majority shotgun library)  
-- Xcontam if male for captured library  
-- Xcontam stderr  
-- mtContam  
-- mtContam_stderr  
-- Primary_Contact (e.g. project leader or first author)  
-- Publication_status (published or unpublished)  
-- Note  
+The order of the samples (rows) in the `.janno` file must be equal to the order in the files that hold the core genetic data.
 
 ## 3. The `poseidon2` command line software
 
