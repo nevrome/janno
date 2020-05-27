@@ -60,9 +60,7 @@ _print_modules() {
 
 _create_binary_file_list_file() {
   printf "Creating input file for plink merge...\\n"
-  # input file
   _input_file=${1}
-  # temporary output file
   _output_file=${2}
   rm -f ${_output_file}
   touch ${_output_file}
