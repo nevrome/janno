@@ -60,8 +60,7 @@ cat > ${_log_file_directory}/convertf.par <<EOF
   familynames: NO
 EOF
   # print path to conversion file
-  printf "=> ${_log_file_directory}/convertf.par\\n" 
-  printf "=> "
+  printf "=> ${_log_file_directory}/convertf.par\\n=> "
   # run actual conversion with sbatch
   #sbatch -c 1 --mem=2000  -J "poseidon_convert" --wrap="plink --bed ${_file_list[0]} --bim ${_file_list[1]} --fam ${_file_list[2]} --recode --out ${6} && convertf -p convertf.par > convert.log"
   sbatch -c 1 --mem=2000  -J "poseidon_convert" -o "${_log_file_directory}/poseidon2_%j.out" -e "${_log_file_directory}/poseidon2_%j.err" --wrap="convertf -p ${_log_file_directory}/convertf.par > ${_log_file_directory}/convert.log"

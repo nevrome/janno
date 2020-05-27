@@ -15,6 +15,10 @@ convert => Converts data in poseidon packages
 
   output_format		Output file format. One of eigenstrat, ...
   input_module		Path to poseidon2 module that is supposed to be converted
+
+  Example (run in your home dir): 
+  cp -r /projects1/poseidon/janno/test_data/test_package_2 poseidon2_convert_test_package
+  /projects1/poseidon/janno/poseidon2.sh convert eigenstrat poseidon2_convert_test_package
   
 extract => (Not implemented yet) Extracts certain SNP panels from a poseidon package 
 
@@ -32,6 +36,9 @@ merge => Merges multiple poseidon packages
 
   input_file		File with a list of paths to poseidon module directories
   output_directory	Path to an output directory
+
+  Example (run in your home dir): 
+  /projects1/poseidon/janno/poseidon2.sh merge /projects1/poseidon/janno/test_data/test_package_list.txt poseidon2_merge_test_package
 
 EOF
 }

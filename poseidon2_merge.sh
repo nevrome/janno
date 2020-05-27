@@ -110,6 +110,8 @@ _janno_merge() {
     then
       continue
     fi
+    # add newlines add the end of the file if missing
+    #sed -e '$a\' ${_new_file} > ${_new_file}
     _janno_files+=("${_new_file}")
   done <${_input_file}
   # merge resulting janno files
