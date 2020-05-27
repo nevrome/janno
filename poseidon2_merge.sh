@@ -110,14 +110,25 @@ _janno_merge() {
     then
       continue
     fi
-    # add newlines add the end of the file if missing
-    #sed -e '$a\' ${_new_file} > ${_new_file}
+    _check_if_newline_at_eof ${_new_file}
     _janno_files+=("${_new_file}")
   done <${_input_file}
   # merge resulting janno files
   _merge_multiple_files_with_header "${_output_file}" "${_janno_files[@]}"
   # print output file path
   printf "=> ${_output_file}\\n"
+}
+
+_check_if_newline_at_eof() {
+    if ! _file_ends_with_newline $1
+    then
+        printf "Missing newline at the end of:\\n=> $1\\n\\n"
+	exit 1
+    fi
+}
+
+_file_ends_with_newline() {
+    [[ $(tail -c1 "$1" | wc -l) -gt 0 ]]
 }
 
 _merge_multiple_files_and_cut_first_two_columns() {
