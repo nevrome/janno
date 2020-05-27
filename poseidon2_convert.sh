@@ -50,8 +50,8 @@ _ped2eig() {
   # create eigensoft convertion config file  
   touch "${_log_file_directory}/convertf.par"
 cat > ${_log_file_directory}/convertf.par <<EOF
-  genotypename: ${_file_name}.ped
-  snpname: ${_file_name}.map
+  genotypename: ${_file_list[0]}
+  snpname: ${_file_list[1]}
   indivname: ${_log_file_directory}/for_conversion.pedind
   outputformat: EIGENSTRAT
   genotypeoutname: ${_file_name}.geno
@@ -64,5 +64,6 @@ EOF
   printf "=> "
   # run actual conversion with sbatch
   #sbatch -c 1 --mem=2000  -J "poseidon_convert" --wrap="plink --bed ${_file_list[0]} --bim ${_file_list[1]} --fam ${_file_list[2]} --recode --out ${6} && convertf -p convertf.par > convert.log"
+  sbatch -c 1 --mem=2000  -J "poseidon_convert" -o "${_log_file_directory}/poseidon2_%j.out" -e "${_log_file_directory}/poseidon2_%j.err" --wrap="convertf -p ${_log_file_directory}/convertf.par > ${_log_file_directory}/convert.log"
 }
 
