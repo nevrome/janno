@@ -2,7 +2,7 @@
 
 _merge() {
   # catch input variables
-  _input_file_with_list_of_poseidon_modules=${1}
+  _input_file_with_list_of_poseidon_packages=${1}
   _output_directory=${2}
   # prepare other variables
   _current_date=${3}
@@ -11,14 +11,14 @@ _merge() {
   _plink_input_file="${_log_file_directory}/poseidon2_merge_plink_input_file.txt"
   _plink_order_file="${_log_file_directory}/poseidon2_merge_plink_order_file.txt"
   # start message
-  _merge_start_message ${_input_file_with_list_of_poseidon_modules} ${_output_directory} ${_output_files_name} ${_log_file_directory}
-  _print_modules ${_input_file_with_list_of_poseidon_modules}
+  _merge_start_message ${_input_file_with_list_of_poseidon_packages} ${_output_directory} ${_output_files_name} ${_log_file_directory}
+  _print_packages ${_input_file_with_list_of_poseidon_packages}
   # make output and log directory
   mkdir -p ${_output_directory}
   # run steps
-  _create_binary_file_list_file ${_input_file_with_list_of_poseidon_modules} ${_plink_input_file}
-  _janno_merge ${_input_file_with_list_of_poseidon_modules} ${_output_directory} ${_output_files_name}
-  _create_order_file_from_fam_files ${_input_file_with_list_of_poseidon_modules} ${_plink_order_file}
+  _create_binary_file_list_file ${_input_file_with_list_of_poseidon_packages} ${_plink_input_file}
+  _janno_merge ${_input_file_with_list_of_poseidon_packages} ${_output_directory} ${_output_files_name}
+  _create_order_file_from_fam_files ${_input_file_with_list_of_poseidon_packages} ${_plink_order_file}
   _plink_merge ${_plink_input_file} ${_plink_order_file} ${_output_directory} ${_output_files_name} ${_log_file_directory}
   
   printf "\\n"
@@ -35,7 +35,7 @@ cat << EOF
 
 merge => Merges multiple poseidon directories
   
-Input file with modules list:	${1}
+Input file with package list:	${1}
 Output directory: 		${2}
 Output file name: 		${3}.*
 Log file directory:		${4}  
@@ -43,10 +43,10 @@ Log file directory:		${4}
 EOF
 }
 
-_print_modules() {
-  printf "Modules to be merged:\\n"
+_print_packages() {
+  printf "Packages to be merged:\\n"
   _input_file=${1}
-  # loop through all modules directories
+  # loop through all packages directories
   while read p; do
     # ignore empty names (empty lines in the input dir list)
     if [ -z "${p}" ]
@@ -64,7 +64,7 @@ _create_binary_file_list_file() {
   _output_file=${2}
   rm -f ${_output_file}
   touch ${_output_file}
-  # loop through all modules directories
+  # loop through all packages directories
   while read p; do
     # ignore empty names (empty lines in the input dir list)
     if [ -z "${p}" ]
@@ -97,7 +97,7 @@ _janno_merge() {
   printf "Merge janno files...\\n"
   _input_file=${1}
   _output_file="${2}/${3}.janno"
-  # loop through all modules directories
+  # loop through all packages directories
   _janno_files=()
   while read p; do
     # ignore empty names (empty lines in the input dir list)
@@ -129,7 +129,7 @@ _create_order_file_from_fam_files() {
   printf "Merge fam files to get order file...\\n"
   _input_file=${1}
   _output_file=${2}
-  # loop through all modules directories
+  # loop through all packages directories
   _fam_files=()
   while read p; do
     # ignore empty names (empty lines in the input dir list)

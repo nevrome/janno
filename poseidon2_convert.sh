@@ -3,14 +3,14 @@
 _convert() {
   # catch input variables
   _output_format=${1}
-  _input_module=${2}
+  _input_package=${2}
   # prepare other variables
   _log_file_directory=${3}
   # start message
-  _convert_start_message ${_input_module} ${_output_format} ${_log_file_directory}
+  _convert_start_message ${_input_package} ${_output_format} ${_log_file_directory}
   # run conversion depending on user input
   case "${_output_format}" in
-    eigenstrat) _ped2eig ${_input_module} ${_log_file_directory} ;; #_ped2eig ${_input_module} ${_output_files_name} ;;
+    eigenstrat) _ped2eig ${_input_package} ${_log_file_directory} ;;
     *) printf "I don't know this output format name.\\n"
   esac
 }
@@ -26,7 +26,7 @@ cat << EOF
 
 convert => Converts data in poseidon directories
   
-Input module:			${1}
+Input package:			${1}
 Output format: 			${2}
 Log file directory:		${3}  
   

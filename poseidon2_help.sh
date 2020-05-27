@@ -7,16 +7,16 @@ cat << EOF
  |  __/ \___/|___/\___|_|\____|\___/|_| |_|_____|
  |_| 
 
-Utility functions for the poseidon2 data format. All input directories have to adhere to the poseidon2 file structure as documented here: /projects1/poseidon/janno/README.md
+Utility functions for the poseidon2 data format. All input directories have to adhere to the poseidon2 package file structure as documented here: /projects1/poseidon/janno/README.md
 
-convert => Converts data in poseidon directories
+convert => Converts data in poseidon packages
   
   ${_ME} convert [output_format] [input_module]
 
   output_format		Output file format. One of eigenstrat, ...
   input_module		Path to poseidon2 module that is supposed to be converted
   
-extract => Extracts certain SNP panels from a poseidon module
+extract => (Not implemented yet) Extracts certain SNP panels from a poseidon package 
 
   ${_ME} extract ...
 
@@ -26,7 +26,7 @@ help => Shows this screen
 
   ${_ME} help
 
-merge => Merges multiple poseidon directories
+merge => Merges multiple poseidon packages
  
   ${_ME} merge [input_file] [output_directory]
 
