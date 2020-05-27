@@ -23,6 +23,7 @@ IFS=$'\n\t'
 
 # Set to the program's basename.
 _ME=$(basename "${0}")
+_path_to_me=$(dirname "${0}")
 
 #### Main Function ####
 
@@ -53,10 +54,10 @@ _main() {
 
 #### Load other code files ####
 
-source poseidon2_help.sh
-source poseidon2_merge.sh
-source poseidon2_convert.sh
-source poseidon2_extract.sh
+source ${_path_to_me}/poseidon2_help.sh
+source ${_path_to_me}/poseidon2_merge.sh
+source ${_path_to_me}/poseidon2_convert.sh
+source ${_path_to_me}/poseidon2_extract.sh
 
 #### Run ####
 
