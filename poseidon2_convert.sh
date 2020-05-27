@@ -35,35 +35,34 @@ EOF
 
 _ped2eig() {
   printf "Converting plink files to eigenstrat format...\\n"
-
   _input_package=${1}  
   _log_file_directory=${2}
-
+  # loop to get links to bed, bim and fam file
   _file_list=()
   for extension in bed bim fam
   do
     _file_list+=($(find "${_input_package}/" -name "*.${extension}"))
   done
-
+  # get 
   _file_name=${_file_list[1]%.*}
-  
+  # prepare pedind file
+  awk '{print $1, $2, $3, $4, $5, $1}' ${_file_list[2]} > "${_log_file_directory}/for_conversion.pedind"
+  # create eigensoft convertion config file  
   touch "${_log_file_directory}/convertf.par"
- 
 cat > ${_log_file_directory}/convertf.par <<EOF
   genotypename: ${_file_name}.ped
   snpname: ${_file_name}.map
-  indivname: ${_file_name}.pedind
+  indivname: ${_log_file_directory}/for_conversion.pedind
   outputformat: EIGENSTRAT
   genotypeoutname: ${_file_name}.geno
   snpoutname: ${_file_name}.snp
   indivoutname: ${_file_name}.ind
   familynames: NO
 EOF
-
+  # print path to conversion file
   printf "=> ${_log_file_directory}/convertf.par\\n" 
-
- # TODO: check .pedind format, we might have create it or just modify one of plink files
+  printf "=> "
+  # run actual conversion with sbatch
   #sbatch -c 1 --mem=2000  -J "poseidon_convert" --wrap="plink --bed ${_file_list[0]} --bim ${_file_list[1]} --fam ${_file_list[2]} --recode --out ${6} && convertf -p convertf.par > convert.log"
-
 }
 
