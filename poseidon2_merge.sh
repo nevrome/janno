@@ -105,7 +105,7 @@ _janno_merge() {
     then
       continue
     fi
-    _new_file=$(find "${p}/" -name "*.tsv" -not -path '*/\.*')
+    _new_file=$(find "${p}/" -name "*.janno" -not -path '*/\.*')
     if [ -z "${_new_file}" ]
     then
       continue
