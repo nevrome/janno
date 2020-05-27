@@ -13,6 +13,8 @@ _convert() {
     eigenstrat) _ped2eig ${_input_package} ${_log_file_directory} ;;
     *) printf "I don't know this output format name.\\n"
   esac
+
+  printf "\\n"
 }
 
 _convert_start_message() {
