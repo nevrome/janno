@@ -11,10 +11,10 @@ Utility functions for the poseidon2 data format. All input directories have to a
 
 convert => Converts data in poseidon directories
   
-  ${_ME} convert [input_module] [output_format]
+  ${_ME} convert [output_format] [input_module]
 
-  input_module		Path to poseidon2 module that is supposed to be converted
   output_format		Output file format. One of eigenstrat, ...
+  input_module		Path to poseidon2 module that is supposed to be converted
   
 extract => Extracts certain SNP panels from a poseidon module
 

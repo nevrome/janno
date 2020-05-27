@@ -2,8 +2,8 @@
 
 _convert() {
   # catch input variables
-  _input_module=${1}
-  _output_format=${2}
+  _output_format=${1}
+  _input_module=${2}
   # prepare other variables
   _log_file_directory=${3}
   # start message
