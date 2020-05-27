@@ -75,9 +75,6 @@ Every package should have the following files:
 Each of the data-subfolders must hold all the following files:
 
 - X.janno (see below)
-- X.geno
-- X.snp
-- X.ind
 - X.bed
 - X.bim
 - X.fam
