@@ -100,7 +100,7 @@ Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.janno
 
 The .janno file is a tab-separated text file with a header line that holds a clearly defined set of metainformation (columns) for each sample (rows) in a package. 
 
-The variables (columns), variable types and possible content of the janno file are documented here: https://docs.google.com/spreadsheets/d/1YfdApKAqSKdxsw_AdFqLqo6zfru-IFmwty1uUPMfYv0
+The variables (columns), variable types and possible content of the janno file are documented in a google doc (ask the admins).
 
 A .janno file must have all of these columns in exactly this order with exactly these column names. If information is unknown or a variable does not apply for a certain sample, then the respective cell(s) can be filled with the NULL value n/a. Ideally, a .janno file should have the least number of n/a-values possible.
 
