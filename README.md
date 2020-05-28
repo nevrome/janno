@@ -86,13 +86,13 @@ Switzerland_LNBA_Roswita/CHANGELOG.txt
 Switzerland_LNBA_Roswita/2019_03_20/
 Switzerland_LNBA_Roswita/2019_05_15/  
 ...  
-Switzerland_LNBA_Roswita/2019_05_15/Bohemia_LNBA.eigenstrat.geno
-Switzerland_LNBA_Roswita/2019_05_15/Bohemia_LNBA.eigenstrat.snp
-Switzerland_LNBA_Roswita/2019_05_15/Bohemia_LNBA.eigenstrat.ind
-Switzerland_LNBA_Roswita/2019_05_15/Bohemia_LNBA.plink.bed
-Switzerland_LNBA_Roswita/2019_05_15/Bohemia_LNBA.plink.bim
-Switzerland_LNBA_Roswita/2019_05_15/Bohemia_LNBA.plink.fam
-Switzerland_LNBA_Roswita/Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.janno
+Switzerland_LNBA_Roswita/2019_05_15/Switzerland_LNBA.eigenstrat.geno
+Switzerland_LNBA_Roswita/2019_05_15/Switzerland_LNBA.eigenstrat.snp
+Switzerland_LNBA_Roswita/2019_05_15/Switzerland_LNBA.eigenstrat.ind
+Switzerland_LNBA_Roswita/2019_05_15/Switzerland_LNBA.plink.bed
+Switzerland_LNBA_Roswita/2019_05_15/Switzerland_LNBA.plink.bim
+Switzerland_LNBA_Roswita/2019_05_15/Switzerland_LNBA.plink.fam
+Switzerland_LNBA_Roswita/2019_05_15/Switzerland_LNBA.janno
 ```
 
 ## 2. The `.janno` file
