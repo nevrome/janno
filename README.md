@@ -1,7 +1,6 @@
 # Poseidon v.2: DAG Genotype Data Organisation
-Last Update: May 25, 2020
 
-Poseidon v.2 is an intermediate solution for the genotype data organisation within the department of archaeogenetics at the Max Planck Institute for the Science of Human History (MPI-SHH). 
+Poseidon v.2 is an intermediate solution for the genotype data organisation within the department of archaeogenetics at the Max Planck Institute for the Science of Human History (MPI-SHH). Please check the internal documentation for more details.
 
 Content of this file:
 
