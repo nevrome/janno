@@ -1,7 +1,7 @@
 # Poseidon v.2: DAG Genotype Data Organisation
 Last Update: May 25, 2020
 
-Poseidon v.2 is an intermediate solution for the genotype data organisation within our department. It's a more simple approach than Stephan's Poseidon v.1 and also not as sophisticated as Stephan's yet unfinished Poseidon v.3, but still may simplify data storage and acquisition in the near to mid-term future.
+Poseidon v.2 is an intermediate solution for the genotype data organisation within the department of archaeogenetics at the Max Planck Institute for the Science of Human History (MPI-SHH). 
 
 Content of this file:
 
@@ -15,7 +15,7 @@ All ancient and modern data are distributed into so-called packages, which are f
 
 Individual contributors would create packages in dedicated poseidon folders in their user project directories, e.g. `/project1/user/xyz/poseidon/2018_Lamnidis_Fennoscandia`. That way, subfolders belong to individual maintainers and be writable only by them. 
 
-The poseidon admins (currently Stephan, Wolfgang, Ayshin and Clemens) would then link these packages into the official `/projects1/poseidon` repo, where we distinguish ancient and modern genotype data:
+The poseidon admins would then link these packages into the official `/projects1/poseidon` repo, located on the HPC storage unit of the MPI-SHH, where we distinguish ancient and modern genotype data:
 
 ```
 /projects1/poseidon/ancient/…  
@@ -37,9 +37,9 @@ Ancient published: YEAR_NAME_IDENTIFIER
 Ancient unpublished: IDENTIFIER_NAME
 
 ```
-Bohemia_LNBA_Luka  
-Africa_with_DA_Ke  
-SouthEastAsia_Selina  
+Switzerland_LNBA_Roswita  
+Italy_Mesolithic_Paul  
+SouthEastAsia_Simon  
 ```
 
 Modern published: YEAR_(NAME)_IDENTIFIER
@@ -56,8 +56,8 @@ Modern published: YEAR_(NAME)_IDENTIFIER
 Modern unpublished: IDENTIFIER_NAME
 
 ```
-Eurasia_newHO_Choongwon  
-Mali_Dogon_Hiba
+Eurasia_newHO_Paul
+Afrika_newHO_Andrea
 ```
 
 Identifiers can be somewhat informal as long as the project is ongoing, they just need to be unique. As soon as a project gets published, we create a final version of the respective package with the YEAR_NAME_IDENTIFIER label.
@@ -82,18 +82,18 @@ Each of the data-subfolders must hold all the following files:
 Example:
 
 ```
-Bohemia_LNBA_Luka/README.txt
-Bohemia_LNBA_Luka/CHANGELOG.txt
-Bohemia_LNBA_Luka/2019_03_20/
-Bohemia_LNBA_Luka/2019_05_15/  
+Switzerland_LNBA_Roswita/README.txt
+Switzerland_LNBA_Roswita/CHANGELOG.txt
+Switzerland_LNBA_Roswita/2019_03_20/
+Switzerland_LNBA_Roswita/2019_05_15/  
 ...  
-Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.eigenstrat.geno
-Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.eigenstrat.snp
-Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.eigenstrat.ind
-Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.plink.bed
-Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.plink.bim
-Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.plink.fam
-Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.janno
+Switzerland_LNBA_Roswita/2019_05_15/Bohemia_LNBA.eigenstrat.geno
+Switzerland_LNBA_Roswita/2019_05_15/Bohemia_LNBA.eigenstrat.snp
+Switzerland_LNBA_Roswita/2019_05_15/Bohemia_LNBA.eigenstrat.ind
+Switzerland_LNBA_Roswita/2019_05_15/Bohemia_LNBA.plink.bed
+Switzerland_LNBA_Roswita/2019_05_15/Bohemia_LNBA.plink.bim
+Switzerland_LNBA_Roswita/2019_05_15/Bohemia_LNBA.plink.fam
+Switzerland_LNBA_Roswita/Bohemia_LNBA_Luka/2019_05_15/Bohemia_LNBA.janno
 ```
 
 ## 2. The `.janno` file
@@ -110,4 +110,4 @@ The order of the samples (rows) in the .janno file must be equal to the order in
 
 To automate the most important operations with Poseidon v.2 packages, the department collaboratively develops a bash command line tool called poseidon2. See the help module to learn about the current set of features: `./poseidon2.sh help`.
 
-If you want to add features please contact Clemens or Ayshin to get write access to the source code.
+If you want to add features please contact @nevrome to get write access to the source code.
