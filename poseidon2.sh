@@ -25,6 +25,15 @@ IFS=$'\n\t'
 _ME=$(basename "${0}")
 _path_to_me=$(dirname "${0}")
 
+#### Helper functions ####
+
+_check_number_of_input_parameters() {
+  if [[ $# -ne ${1} ]]; then
+    echo "Illegal number of parameters"
+    exit 2
+  fi
+}
+
 #### Main Function ####
 
 _main() {
@@ -35,6 +44,14 @@ _main() {
   fi
   # catch module variable
   _module="${1}"
+  # check number of input parameters
+  case "${_module}" in
+    help) _print_help ;;
+    merge) _check_number_of_input_parameters 2 ;;
+    convert) _check_number_of_input_parameters 2 ;;
+    extract) printf "Not yet implemented.\\n" ;;
+    *) printf "I don't know this module name.\\n"
+  esac
   # get name date
   _current_date="$(date +'%Y_%m_%d_%H_%M')"
   # create tmp_and_log_directory
