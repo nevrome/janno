@@ -28,8 +28,8 @@ _path_to_me=$(dirname "${0}")
 #### Helper functions ####
 
 _check_number_of_input_parameters() {
-  if [[ $# -ne ${1} ]]; then
-    echo "Illegal number of parameters"
+  if (( ${1} != ${2} )); then
+    printf "Illegal number of parameters\\n"
     exit 2
   fi
 }
@@ -47,8 +47,8 @@ _main() {
   # check number of input parameters
   case "${_module}" in
     help) _print_help ;;
-    merge) _check_number_of_input_parameters 2 ;;
-    convert) _check_number_of_input_parameters 2 ;;
+    merge) _check_number_of_input_parameters $# 3 ;;
+    convert) _check_number_of_input_parameters $# 3 ;;
     extract) printf "Not yet implemented.\\n" ;;
     *) printf "I don't know this module name.\\n"
   esac
