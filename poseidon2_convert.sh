@@ -8,6 +8,8 @@ _convert() {
   _log_file_directory=${3}
   # start message
   _convert_start_message ${_input_package} ${_output_format} ${_log_file_directory}
+  # check if the input package is valid
+  _check_if_valid_package ${_input_package}
   # run conversion depending on user input
   case "${_output_format}" in
     eigenstrat) _ped2eig ${_input_package} ${_log_file_directory} ;;

@@ -71,6 +71,7 @@ _main() {
 
 #### Load other code files ####
 
+source ${_path_to_me}/helpers_check_if_valid_package.sh
 source ${_path_to_me}/poseidon2_help.sh
 source ${_path_to_me}/poseidon2_merge.sh
 source ${_path_to_me}/poseidon2_convert.sh

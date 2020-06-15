@@ -13,6 +13,8 @@ _merge() {
   # start message
   _merge_start_message ${_input_file_with_list_of_poseidon_packages} ${_output_directory} ${_output_files_name} ${_log_file_directory}
   _print_packages ${_input_file_with_list_of_poseidon_packages}
+  # check if the input packages are valid
+  _check_packages ${_input_file_with_list_of_poseidon_packages}
   # make output and log directory
   mkdir -p ${_output_directory}
   # run steps
@@ -54,6 +56,20 @@ _print_packages() {
       continue
     fi
     printf "=> ${p}\\n"
+  done <${_input_file}
+  printf "\\n"
+}
+
+_check_packages() {
+  _input_file=${1}
+  # loop through all packages directories
+  while read p; do
+    # ignore empty names (empty lines in the input dir list)
+    if [ -z "${p}" ]
+    then
+      continue
+    fi
+    _check_if_valid_package ${p}
   done <${_input_file}
   printf "\\n"
 }
