@@ -29,7 +29,7 @@ _path_to_me=$(dirname "${0}")
 
 _check_number_of_input_parameters() {
   if (( ${1} != ${2} )); then
-    printf "Illegal number of parameters\\n"
+    printf "Error 2: Illegal number of parameters\\n"
     exit 2
   fi
 }

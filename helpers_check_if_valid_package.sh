@@ -20,7 +20,7 @@ _check_if_valid_package() {
 
 _check_number_of_files() {
   if (( ${1} != ${2} )); then
-    printf "Multiple ${3} files in input package ${4}\\n"
+    printf "Error 3: Multiple ${3} files in input package ${4}\\n"
     exit 3
   fi
 }
