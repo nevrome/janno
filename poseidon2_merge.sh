@@ -15,7 +15,7 @@ _merge() {
   _print_packages ${_input_file_with_list_of_poseidon_packages}
   # check if the input packages are valid
   _check_packages ${_input_file_with_list_of_poseidon_packages}
-  # make output and log directory
+  # make output directory
   mkdir -p ${_output_directory}
   # run steps
   _create_binary_file_list_file ${_input_file_with_list_of_poseidon_packages} ${_plink_input_file}

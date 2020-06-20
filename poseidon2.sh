@@ -48,7 +48,7 @@ _main() {
   case "${_module}" in
     help) _print_help ;;
     merge) _check_number_of_input_parameters $# 3 ;;
-    convert) _check_number_of_input_parameters $# 3 ;;
+    convert) _check_number_of_input_parameters $# 4 ;;
     extract) printf "Not yet implemented.\\n" ;;
     *) printf "I don't know this module name.\\n"
   esac
@@ -61,7 +61,7 @@ _main() {
   case "${_module}" in
     help) _print_help ;;
     merge) _merge ${2} ${3} ${_current_date} ${_log_file_directory} ;;
-    convert) _convert ${2} ${3} ${_log_file_directory} ;;
+    convert) _convert ${2} ${3} ${4} ${_log_file_directory} ;;
     extract) printf "Not yet implemented.\\n" ;;
     *) printf "I don't know this module name.\\n"
   esac

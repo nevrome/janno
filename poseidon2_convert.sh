@@ -4,15 +4,18 @@ _convert() {
   # catch input variables
   _output_format=${1}
   _input_package=${2}
+  _output_directory=${3}
   # prepare other variables
-  _log_file_directory=${3}
+  _log_file_directory=${4}
   # start message
-  _convert_start_message ${_input_package} ${_output_format} ${_log_file_directory}
+  _convert_start_message ${_input_package} ${_output_format} ${_output_directory} ${_log_file_directory}
   # check if the input package is valid
   _check_if_valid_package ${_input_package}
+  # make output directory
+  mkdir -p ${_output_directory}
   # run conversion depending on user input
   case "${_output_format}" in
-    eigenstrat) _ped2eig ${_input_package} ${_log_file_directory} ;;
+    eigenstrat) _ped2eig ${_input_package} ${_output_directory} ${_log_file_directory} ;;
     *) printf "I don't know this output format name.\\n"
   esac
 
@@ -32,7 +35,8 @@ convert => Converts data in poseidon directories
   
 Input package:			${1}
 Output format: 			${2}
-Log file directory:		${3}  
+Output directory: 		${3}
+Log file directory:		${4}  
   
 EOF
 }
@@ -40,7 +44,8 @@ EOF
 _ped2eig() {
   printf "Converting plink files to eigenstrat format...\\n"
   _input_package=${1}  
-  _log_file_directory=${2}
+  _output_directory=${2}
+  _log_file_directory=${3}
   # loop to get links to bed, bim and fam file
   _file_list=()
   for extension in bed bim fam
@@ -48,7 +53,7 @@ _ped2eig() {
     _file_list+=($(find "${_input_package}/" -name "*.${extension}"))
   done
   # get 
-  _file_name=${_file_list[1]%.*}
+  _file_name=$(basename "${_file_list[0]}" .bed)  #${_file_list[1]%.*}
   # prepare pedind file
   awk '{print $1, $2, $3, $4, $5, $1}' ${_file_list[2]} > "${_log_file_directory}/for_conversion.pedind"
   # create eigensoft convertion config file  
@@ -58,9 +63,9 @@ cat > ${_log_file_directory}/convertf.par <<EOF
   snpname: ${_file_list[1]}
   indivname: ${_log_file_directory}/for_conversion.pedind
   outputformat: EIGENSTRAT
-  genotypeoutname: ${_file_name}.geno
-  snpoutname: ${_file_name}.snp
-  indivoutname: ${_file_name}.ind
+  genotypeoutname: ${_output_directory}/${_file_name}.geno
+  snpoutname: ${_output_directory}/${_file_name}.snp
+  indivoutname: ${_output_directory}/${_file_name}.ind
   familynames: NO
 EOF
   # print path to conversion file
