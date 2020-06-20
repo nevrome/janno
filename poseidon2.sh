@@ -53,9 +53,11 @@ _main() {
     *) printf "I don't know this module name.\\n"
   esac
   # get name date
-  _current_date="$(date +'%Y_%m_%d_%H_%M')"
+  _current_date="$(date +'%Y-%m-%d_%H:%M')"
+  # get random alphanumeric string
+  _random_string="$(openssl rand -hex 7)"
   # create tmp_and_log_directory
-  _log_file_directory="poseidon2_tmp_and_log/${_current_date}"
+  _log_file_directory="poseidon2_tmp_and_log/${_current_date}_${_random_string}"
   mkdir -p ${_log_file_directory}
   # run modules depending on user input
   case "${_module}" in
