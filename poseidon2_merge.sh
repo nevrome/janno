@@ -50,11 +50,10 @@ _print_packages() {
   _input_file=${1}
   # loop through all packages directories
   while read p; do
-    # ignore empty names (empty lines in the input dir list)
-    if [ -z "${p}" ]
-    then
-      continue
-    fi
+    # ignore empty names and lines starting with in the input dir list
+    case ${p} in
+      ''|\#*) continue ;;
+    esac
     printf "=> ${p}\\n"
   done <${_input_file}
   printf "\\n"
@@ -64,11 +63,10 @@ _check_packages() {
   _input_file=${1}
   # loop through all packages directories
   while read p; do
-    # ignore empty names (empty lines in the input dir list)
-    if [ -z "${p}" ]
-    then
-      continue
-    fi
+    # ignore empty names and lines starting with in the input dir list
+    case ${p} in
+      ''|\#*) continue ;;
+    esac
     _check_if_valid_package ${p}
   done <${_input_file}
   printf "\\n"
@@ -82,11 +80,10 @@ _create_binary_file_list_file() {
   touch ${_output_file}
   # loop through all packages directories
   while read p; do
-    # ignore empty names (empty lines in the input dir list)
-    if [ -z "${p}" ]
-    then
-      continue
-    fi
+    # ignore empty names and lines starting with in the input dir list
+    case ${p} in
+      ''|\#*) continue ;;
+    esac
     # loop through relevant file types (bed, bim, fam)
     _file_list=""
     for extension in bed bim fam
@@ -116,11 +113,10 @@ _janno_merge() {
   # loop through all packages directories
   _janno_files=()
   while read p; do
-    # ignore empty names (empty lines in the input dir list)
-    if [ -z "${p}" ]
-    then
-      continue
-    fi
+    # ignore empty names and lines starting with in the input dir list
+    case ${p} in
+      ''|\#*) continue ;;
+    esac
     _new_file=$(find "${p}/" -name "*.janno" -not -path '*/\.*')
     if [ -z "${_new_file}" ]
     then
@@ -161,11 +157,10 @@ _create_order_file_from_fam_files() {
   # loop through all packages directories
   _fam_files=()
   while read p; do
-    # ignore empty names (empty lines in the input dir list)
-    if [ -z "${p}" ]
-    then
-      continue
-    fi
+    # ignore empty names and lines starting with in the input dir list
+    case ${p} in
+      ''|\#*) continue ;;
+    esac
     _new_file=$(find "${p}/" -name "*.fam" -not -path '*/\.*')
     if [ -z "${_new_file}" ]
     then
