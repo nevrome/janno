@@ -53,7 +53,7 @@ _main() {
     *) printf "I don't know this module name.\\n"
   esac
   # get name date
-  _current_date="$(date +'%Y-%m-%d_%H:%M')"
+  _current_date="$(date +'%Y-%m-%d_%H-%M')"
   # get random alphanumeric string
   _random_string="$(openssl rand -hex 7)"
   # create tmp_and_log_directory
