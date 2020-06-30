@@ -111,7 +111,7 @@ _janno_merge() {
   _input_file=${1}
   _output_file="${2}/${3}.janno"
   # loop through all packages directories
-  _janno_files=()
+  unset _janno_files
   while read p; do
     # ignore empty names and lines starting with in the input dir list
     case ${p} in
@@ -155,7 +155,7 @@ _create_order_file_from_fam_files() {
   _input_file=${1}
   _output_file=${2}
   # loop through all packages directories
-  _fam_files=()
+  unset _fam_files
   while read p; do
     # ignore empty names and lines starting with in the input dir list
     case ${p} in

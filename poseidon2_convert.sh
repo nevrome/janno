@@ -47,7 +47,7 @@ _ped2eig() {
   _output_directory=${2}
   _log_file_directory=${3}
   # loop to get links to bed, bim and fam file
-  _file_list=()
+  unset _file_list
   for extension in bed bim fam
   do
     _file_list+=($(find "${_input_package}/" -name "*.${extension}"))
